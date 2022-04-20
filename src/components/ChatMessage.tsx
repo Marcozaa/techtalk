@@ -1,11 +1,15 @@
 import React from 'react';
 import { createStyles, Text, Avatar, Group, TypographyStylesProvider, Paper } from '@mantine/core';
 import { motion } from 'framer-motion';
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { useColorModeValue } from '@chakra-ui/react';
 import { useState } from 'react';
 import Reactions from './Reactions';
 import styled from 'styled-components'
+import { useEffect } from 'react';
+import { collection, doc, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { db } from '../firebase/firebase';
+import { FaFire, FaGithub, FaSmile } from 'react-icons/fa';
 
 const useStyles = createStyles((theme) => ({
   comment: {
@@ -28,15 +32,18 @@ const useStyles = createStyles((theme) => ({
 interface CommentHtmlProps {
   postedAt: string;
   body: string;
+  id: string;
+  chosenCollection: string;
   author: {
     name: string;
     image: string;
   };
 }
 
-export function ChatMessage({ postedAt, body, author }: CommentHtmlProps) {
+export function ChatMessage({ postedAt, body, author, id, chosenCollection }: CommentHtmlProps) {
   const { classes } = useStyles();
   const [hover, setHover] = useState(false);
+  const [reactions, setReactions] = useState([]);
   function handleMouseOver(){
     setHover(true)
   }
@@ -45,6 +52,25 @@ export function ChatMessage({ postedAt, body, author }: CommentHtmlProps) {
     setHover(false)
 
   }
+
+
+
+  useEffect(() => { // Listener for reaction updates
+        setReactions([])
+
+
+        onSnapshot(
+          doc(db, "chats/"+chosenCollection+"/messages/"+id), 
+          { includeMetadataChanges: true }, 
+          (doc) => {
+            setReactions(doc.data())
+            return
+          });
+
+          
+       
+      
+}, []) 
   return (
      <StyledMessageContainer
      className='messageContainer'
@@ -57,7 +83,7 @@ export function ChatMessage({ postedAt, body, author }: CommentHtmlProps) {
   >
     {hover == true? (
       <div className="reactionsContainer">
-      <Reactions />
+      <Reactions id={id} chosenCollection={chosenCollection} />
       </div>
     ): null}
     <Box 
@@ -78,8 +104,32 @@ export function ChatMessage({ postedAt, body, author }: CommentHtmlProps) {
       </Group>
       <TypographyStylesProvider className={classes.body}>
         <Text color={useColorModeValue("black", "white")} className={classes.content} dangerouslySetInnerHTML={{ __html: body }} />
+              <div className="reactionsCounters">
+      {reactions && (
+        <>
+        <Box bg={'gray'} marginTop={'0.8rem'} p={'0.5rem'} borderRadius={'0.5rem'} color={'white'}>
+          <Flex justifyContent={'center'} alignItems={'center'} gap={'0.8rem'}>
+          <FaSmile />
+          {reactions.smile}
+          </Flex>
+        </Box>
+        <Box bg={'gray'} marginTop={'0.8rem'} p={'0.5rem'} borderRadius={'0.5rem'} color={'white'}>
+          <Flex justifyContent={'center'} alignItems={'center'} gap={'0.8rem'}>
+          <FaFire />
+          {reactions.fire}
+          </Flex>
+        </Box>
+        <Box bg={'gray'} marginTop={'0.8rem'} p={'0.5rem'} borderRadius={'0.5rem'} color={'white'}>
+          <Flex justifyContent={'center'} alignItems={'center'} gap={'0.8rem'}>
+          <FaGithub />
+          {reactions.gitHub}
+          </Flex>
+        </Box>
+        </>
+      )}
+       </div>
       </TypographyStylesProvider>
-    </Box>
+      </Box> 
     </StyledMessageContainer>
   );
 }
@@ -89,5 +139,12 @@ const StyledMessageContainer = styled(motion.div)`
         position: absolute;
         top: -5px;
         right: 2rem;
+    }
+    .reactionsCounters{
+      display: flex;
+      justify-content:flex-start ;
+      align-items:center ;
+      gap: 0.5rem;
+      
     }
 `

@@ -6,7 +6,16 @@ import { BsGithub } from 'react-icons/bs';
 import { useColorModeValue } from '@chakra-ui/react';
 import { FaFireAlt, FaSmile } from 'react-icons/fa';
 import { HiOutlineUpload } from 'react-icons/hi';
-export default function Reactions() {
+import { doc, increment, updateDoc  } from "firebase/firestore"; 
+import { db } from '../firebase/firebase';
+
+export default function Reactions({id, chosenCollection}) {
+  async function addReactionToMessage(type){
+  // Add reaction in firebase document 
+  await updateDoc(doc(db, "chats/"+chosenCollection+"/messages/"+id), {
+    [type]:  increment(1)
+  });
+  }
   return (
     <StyledReactionsContainer
     style={{background: useColorModeValue("white","#2D3748")}}
@@ -15,9 +24,9 @@ export default function Reactions() {
     }}
     transition={{ duration: 0.4 }}
     >
-    <FaSmile className='icon'/>
-    <FaFireAlt className='icon'/>
-    <BsGithub className='icon'/>
+    <FaSmile className='icon' onClick={()=>addReactionToMessage("smile")}/>
+    <FaFireAlt className='icon'onClick={()=>addReactionToMessage("fire")}/>
+    <BsGithub className='icon'onClick={()=>addReactionToMessage("gitHub")}/>
     </StyledReactionsContainer>
   )
 }

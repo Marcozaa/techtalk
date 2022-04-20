@@ -71,21 +71,26 @@ return humanReadable; //{hours: 0, minutes: 30}
  }
 
     const [messages, setMessages] = useState([]) // This state contains all the messages in a single chat
-    
+    const [messagesIds, setMessagesIds] = useState([]) // This state contains all the messages in a single chat
+
     useEffect(() => { // We'll get all the messages in a single goup chat
         setMessages([])
-
+        setMessagesIds([])
 
         onSnapshot(query(collection(db, "chats/"+chosenCollection+"/messages"),
         orderBy("timestamp")), (snapshot)=>{
             setMessages([])
-            snapshot.docs.map(doc =>
-                 setMessages((messages) => [...messages,doc.data()])
+            setMessagesIds([])
+            snapshot.docs.map(doc =>{
+
+              setMessages((messages) => [...messages,doc.data()])
+              setMessagesIds((messagesIds) => [...messagesIds, doc.id])
+            }
+
             )
         })
       
 }, [chosenCollection]) // Every time we change section useEffect will be triggered.
-
 
 
   return (
@@ -111,6 +116,8 @@ return humanReadable; //{hours: 0, minutes: 30}
                 new Date() // Timestamp of this exact moment
                 ).minutes) + " minutes ago"
             }
+            chosenCollection={chosenCollection}
+            id={messagesIds[i]}
             body={singleMessage.message}
             author={{
             name: singleMessage.name,
@@ -132,12 +139,32 @@ return humanReadable; //{hours: 0, minutes: 30}
   <MenuButton as={Button}>
 <FaSmileBeam />
   </MenuButton>
-  <MenuList>
-    <MenuItem style={{display: 'flex', justifyContent: 'center', gap: '0.2rem', alignItems: 'center'}}><Button>😀</Button><Button>😃</Button><Button>😁</Button></MenuItem>
-    <MenuItem style={{display: 'flex', justifyContent: 'center', gap: '0.2rem', alignItems: 'center'}}><Button>😍</Button><Button>😔</Button><Button>🤯</Button></MenuItem>
-    <MenuItem style={{display: 'flex', justifyContent: 'center', gap: '0.2rem', alignItems: 'center'}}><Button>😀</Button><Button>😃</Button><Button>😁</Button></MenuItem>
-    <MenuItem style={{display: 'flex', justifyContent: 'center', gap: '0.2rem', alignItems: 'center'}}><Button>😍</Button><Button>😔</Button><Button>🤯</Button></MenuItem>
-    <MenuItem style={{display: 'flex', justifyContent: 'center', gap: '0.2rem', alignItems: 'center'}}><Button>😀</Button><Button>😃</Button><Button>😁</Button></MenuItem>
+  <MenuList style={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
+    <div style={{display: 'flex', justifyContent: 'center', gap: '0.2rem', alignItems: 'center'}}>
+      <Button onClick={(e)=>setInputState(inputState + "😀")}>😀</Button>
+      <Button onClick={(e)=>setInputState(inputState + "😃")}>😃</Button>
+      <Button onClick={(e)=>setInputState(inputState + "😁")}>😁</Button>
+      </div>
+    <div style={{display: 'flex', justifyContent: 'center', gap: '0.2rem', alignItems: 'center'}}>
+      <Button onClick={(e)=>setInputState(inputState + "😍")}>😍</Button>
+      <Button onClick={(e)=>setInputState(inputState + "😔")}>😔</Button>
+      <Button onClick={(e)=>setInputState(inputState + "🤯")}>🤯</Button>
+      </div>
+    <div style={{display: 'flex', justifyContent: 'center', gap: '0.2rem', alignItems: 'center'}}>
+      <Button onClick={(e)=>setInputState(inputState + "🧠")}>🧠</Button>
+      <Button onClick={(e)=>setInputState(inputState + "👀")}>👀</Button>
+      <Button onClick={(e)=>setInputState(inputState + "🙌")}>🙌</Button>
+      </div>
+    <div style={{display: 'flex', justifyContent: 'center', gap: '0.2rem', alignItems: 'center'}}>
+      <Button onClick={(e)=>setInputState(inputState + "👩‍💻")}>👩‍💻</Button>
+      <Button onClick={(e)=>setInputState(inputState + "👑")}>👑</Button>
+      <Button onClick={(e)=>setInputState(inputState + "👨‍💻")}>👨‍💻</Button>
+      </div>
+    <div style={{display: 'flex', justifyContent: 'center', gap: '0.2rem', alignItems: 'center'}}>
+      <Button onClick={(e)=>setInputState(inputState + "❤️")}>❤️</Button>
+      <Button onClick={(e)=>setInputState(inputState + "📈")}>📈</Button>
+      <Button onClick={(e)=>setInputState(inputState + "📉")}>📉</Button>
+      </div>
    
   </MenuList>
 </Menu>
@@ -145,9 +172,11 @@ return humanReadable; //{hours: 0, minutes: 30}
       
     />
     <Input 
+
     variant={'filled'}
     onSubmit={addMessage}
     onChange={(e)=>setInputState(e.target.value)}
+    value={inputState}
     placeholder={`Send a message to #${chosenCollection}`} />
     <InputRightElement children={<MdSend
     onClick={addMessage}
@@ -185,6 +214,14 @@ const StyledChatSection = styled.div`
           overflow-y:scroll ;
         }
     }
+    @media only screen and (min-height: 1100px) {
+      .messages{
+            min-height: 90vh ;
+          max-height: 90vh;
+          overflow-y:scroll ;
+        }
+    }
+
     .messages::-webkit-scrollbar {
     width: 5px;
     }
@@ -218,12 +255,15 @@ const StyledChatSection = styled.div`
     }
  */
 const StyledChatInput = styled.div`
-width: 80%;
+width: 75vw;
 height: 2rem;
 display:flex ;
 justify-content: center;
 align-items: center;
 position: fixed;
 bottom: 1rem;
+@media only screen and (max-width: 767px) {
+      width: 95%;
+    }
 
 `
