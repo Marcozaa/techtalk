@@ -1,3 +1,6 @@
+# Release
+You can find v1.0 at https://techtalk-9f0c7.web.app/
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
