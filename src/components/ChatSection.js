@@ -6,7 +6,7 @@ import { collection, onSnapshot } from 'firebase/firestore'
 import { useState } from 'react'
 import { ChatMessage } from './ChatMessage.tsx'
 import { motion } from 'framer-motion'
-import { Input, InputRightElement, InputLeftElement, InputGroup } from '@chakra-ui/react'
+import { Input, InputRightElement, InputLeftElement, InputGroup, Button } from '@chakra-ui/react'
 import { FaceId } from 'tabler-icons-react'
 import { ArrowRightBar } from 'tabler-icons-react'
 import { doc, setDoc } from "firebase/firestore"; 
@@ -15,7 +15,16 @@ import { MdSend } from 'react-icons/md'
 import { query, where, getDocs } from "firebase/firestore";
 import { orderBy } from 'firebase/firestore'
 import { FaSmileBeam } from 'react-icons/fa'
-
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+} from '@chakra-ui/react'
 export default function ChatSection({chosenCollection,name, profilePic, email, setCollection}) {
 
 
@@ -115,10 +124,24 @@ return humanReadable; //{hours: 0, minutes: 30}
     <StyledChatInput>
     <InputGroup>
     <InputLeftElement
-      pointerEvents='none'
+      
       color='white.300'
       fontSize='1.2em'
-      children={<FaSmileBeam />}
+      children={
+      <Menu>
+  <MenuButton as={Button}>
+<FaSmileBeam />
+  </MenuButton>
+  <MenuList>
+    <MenuItem style={{display: 'flex', justifyContent: 'center', gap: '0.2rem', alignItems: 'center'}}><Button>😀</Button><Button>😃</Button><Button>😁</Button></MenuItem>
+    <MenuItem style={{display: 'flex', justifyContent: 'center', gap: '0.2rem', alignItems: 'center'}}><Button>😍</Button><Button>😔</Button><Button>🤯</Button></MenuItem>
+    <MenuItem style={{display: 'flex', justifyContent: 'center', gap: '0.2rem', alignItems: 'center'}}><Button>😀</Button><Button>😃</Button><Button>😁</Button></MenuItem>
+    <MenuItem style={{display: 'flex', justifyContent: 'center', gap: '0.2rem', alignItems: 'center'}}><Button>😍</Button><Button>😔</Button><Button>🤯</Button></MenuItem>
+    <MenuItem style={{display: 'flex', justifyContent: 'center', gap: '0.2rem', alignItems: 'center'}}><Button>😀</Button><Button>😃</Button><Button>😁</Button></MenuItem>
+   
+  </MenuList>
+</Menu>
+  }
       
     />
     <Input 
@@ -151,6 +174,13 @@ const StyledChatSection = styled.div`
     @media only screen and (max-width: 600px) {
       .messages{
             min-height: 80vh ;
+          max-height: 80vh;
+          overflow-y:scroll ;
+        }
+    }
+    @media only screen and (min-width: 600px) {
+      .messages{
+            min-height: 75vh ;
           max-height: 80vh;
           overflow-y:scroll ;
         }

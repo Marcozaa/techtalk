@@ -10,13 +10,13 @@ import 'firebase/auth'
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDo_jEoteskl81dls_KKb7Q9XZGfPgX0ao",
-  authDomain: "techtalk-9f0c7.firebaseapp.com",
-  projectId: "techtalk-9f0c7",
-  storageBucket: "techtalk-9f0c7.appspot.com",
-  messagingSenderId: "103056854884",
-  appId: "1:103056854884:web:d8322c7ecb678557617471",
-  measurementId: "G-SHVCC435C1"
+  apiKey: process.env.REACT_APP_apiKey,
+  authDomain: process.env.REACT_APP_authDomain,
+  projectId: process.env.REACT_APP_projectId,
+  storageBucket: process.env.REACT_APP_storageBucket,
+  messagingSenderId: process.env.REACT_APP_messagingSenderId,
+  appId: process.env.REACT_APP_appId,
+  measurementId: process.env.REACT_APP_measurementId,
 };
 
 // Initialize Firebase

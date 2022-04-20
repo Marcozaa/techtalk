@@ -70,7 +70,6 @@ export default function Swibc({name, profilePic, email,chosenCollection, setColl
          setChannels([])
       snapshot.docs.map(doc=> setChannels((channels) => [...channels,doc.id]))
     })
- 
 }, [])
 
 
@@ -178,7 +177,7 @@ function signOut(){
         {channels.map(channel =>(
           <NavItem 
           color={"gray"}
-          onClick={(e)=>{e.preventDefault(); setCollection(channel)}}
+          onClick={(e)=>{e.preventDefault(); setCollection(channel); sidebar.onClose()}}
           icon={FaHashtag}> {channel}</NavItem>
         ))}
       
