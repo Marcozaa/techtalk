@@ -35,7 +35,7 @@ async function get2(){
 get2()
 
 
-const [inputState, setInputState] = useState()
+const [inputState, setInputState] = useState("")
 
 async function addMessage(){
 
@@ -174,7 +174,12 @@ return humanReadable; //{hours: 0, minutes: 30}
     <Input 
 
     variant={'filled'}
-    onSubmit={addMessage}
+    onKeyPress={e=> {
+        if (e.key === 'Enter') {
+           addMessage()
+           setInputState("")
+        }
+     }}
     onChange={(e)=>setInputState(e.target.value)}
     value={inputState}
     placeholder={`Send a message to #${chosenCollection}`} />
