@@ -205,13 +205,13 @@ const StyledChatSection = styled.div`
        max-height: 90vh;
        overflow-y:scroll ;
     }
-    @media only screen and (max-width: 600px) {
+    /*@media only screen and (max-width: 600px) {
       .messages{
             min-height: 80vh ;
           max-height: 80vh;
           overflow-y:scroll ;
         }
-    }
+    }*/
     @media only screen and (min-width: 600px) {
       .messages{
             min-height: 75vh ;
@@ -223,6 +223,13 @@ const StyledChatSection = styled.div`
       .messages{
             min-height: 90vh ;
           max-height: 90vh;
+          overflow-y:scroll ;
+        }
+    }
+    @media only screen and (max-height: 650px) {
+      .messages{
+            min-height: 75vh ;
+          max-height: 75vh;
           overflow-y:scroll ;
         }
     }
