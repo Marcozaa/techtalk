@@ -1,5 +1,33 @@
+
+
 # Release
 You can find v1.0 at https://techtalk-9f0c7.web.app/
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
+
+<img src="/techTalk.PNG"/>
+
+TechTalk is a chat focused on tech topics (coding, system administration, robotics and much more..)
+
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+
+### Built With
+
+
+
+* [ChakraUI](https://chakraui.com/)
+* [React.js](https://reactjs.org/)
+* [Firebase](https://firebase.com/)
+
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+
 
 # Getting Started with Create React App
 
